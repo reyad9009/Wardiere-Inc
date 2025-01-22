@@ -15,7 +15,7 @@ const Login = () => {
         <h2 className="text-3xl font-extrabold text-center mb-10">
           Login your account
         </h2>
-        <form className="px-10">
+        <form className="px-10 ">
           <div className="form-control">
             <label className="label">
               <span className="label-text text-lg font-semibold">Email</span>
@@ -24,7 +24,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="email"
-              className="input input-bordered"
+               className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
               required
             />
           </div>
@@ -36,7 +36,7 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="password"
-              className="input input-bordered"
+               className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
               required
             />
             <button
