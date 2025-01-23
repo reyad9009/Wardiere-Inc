@@ -1,97 +1,62 @@
-// Import necessary libraries
-import React, { useState } from "react";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAxiosPublic from "../../../hook/useAxiosPublic";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../provider/AuthProvider";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import GoogleLogin from "./GoogleLogin";
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const RegistrationForm = () => {
-  const auth = getAuth();
-  const provider = new GoogleAuthProvider();
-  const [photoURL, setPhotoURL] = useState("");
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const password = watch("password");
-
-  // Handle image upload
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const response = await axios.post(
-        "https://api.imgbb.com/1/upload",
-        formData,
-        {
-          params: { key: "YOUR_IMGBB_API_KEY" },
-        }
-      );
-      setPhotoURL(response.data.data.display_url);
-    } catch (error) {
-      console.error("Image upload failed:", error);
-    }
-  };
-
   const onSubmit = async (data) => {
-    try {
-      // Create user in Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      const user = userCredential.user;
+    //image for upload
+    const imageFile = { image: data.image[0] };
+    // Await image upload response
+    const res = await axiosPublic.post(image_hosting_api, imageFile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
 
-      // Save user data in the database
-      await axios.post("/api/users", {
+    if (res.data.success) {
+      const imageUrl = res.data.data.display_url;
+      const result = await createUser(data.email, data.password);
+      await updateUserProfile(data.name, imageUrl);
+      //user data to send to the database
+      const userInfo = {
         email: data.email,
+        name: data.name,
+        photo: imageUrl,
         role: data.role,
         bankAccountNo: data.bankAccountNo,
         salary: data.salary,
         designation: data.designation,
-        photo: photoURL,
-      });
-
-      alert("Registration successful!");
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert(error.message);
-    }
-  };
-
-  // Social login
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Save social login user in the database
-      await axios.post("/api/users", {
-        email: user.email,
-        role: "Employee",
-        bankAccountNo: "N/A",
-        salary: "N/A",
-        designation: "N/A",
-        photo: user.photoURL,
-      });
-
-      alert("Google login successful!");
-    } catch (error) {
-      console.error("Google login failed:", error);
-      alert(error.message);
+      };
+      // Store user info in the database
+      const response = await axiosPublic.post("/users", userInfo);
+      if (response.data.insertedId) {
+        reset();
+        navigate(location?.state ? location.state : "/");
+        toast.success("Registration successful");
+      }
+    } else {
+      toast.error("Image upload failed");
     }
   };
 
@@ -105,6 +70,19 @@ const RegistrationForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-y-6 gap-x-10 items-end w-full"
         >
+          <div className="form-control">
+            <label className="label-text text-lg font-semibold">Name</label>
+            <input
+              type="text"
+              {...register("name", {
+                required: "Name is required",
+              })}
+              className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
+          </div>
           <div className="form-control">
             <label className="label-text text-lg font-semibold">Email</label>
             <input
@@ -126,7 +104,7 @@ const RegistrationForm = () => {
           <div className="form-control">
             <label className="label-text text-lg font-semibold">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -139,8 +117,19 @@ const RegistrationForm = () => {
                     "Password must contain a capital letter and a special character",
                 },
               })}
-              className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
+              className=" relative input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className=" absolute ml-[17rem] mt-[2.2rem] px-2 py-2 bg-white"
+            >
+              {showPassword ? (
+                <FaEyeSlash className="text-lg"></FaEyeSlash>
+              ) : (
+                <FaEye className="text-lg"></FaEye>
+              )}
+            </button>
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
@@ -213,9 +202,8 @@ const RegistrationForm = () => {
             <label className="label-text text-lg font-semibold">Photo</label>
             <input
               type="file"
-              accept="image/*"
+              {...register("image", { required: true })}
               className="file-input file-input-bordered w-full max-w-xs focus:outline-[#ffffff] focus:border-[#fb5402]"
-              onChange={handleImageUpload}
             />
           </div>
 
@@ -230,12 +218,7 @@ const RegistrationForm = () => {
         </form>
         <div className="divider">OR</div>
         <div className="card rounded-box flex items-center justify-center gap-2">
-          <button
-            onClick={handleGoogleLogin}
-            className="flex justify-center items-center"
-          >
-            <FcGoogle className="text-4xl" />
-          </button>
+          <GoogleLogin></GoogleLogin>
         </div>
         <p className="text-center mb-10 mt-5">
           Don't have an account ?

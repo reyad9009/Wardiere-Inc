@@ -1,11 +1,32 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "./GoogleLogin";
+import { toast } from "react-toastify";
+import useAuth from "../../../hook/useAuth";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation()
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    console.log(email, password);
+
+    signIn(email, password).then((result) => {
+      const user = result.user;
+      console.log(user);
+      navigate(location?.state ? location.state : "/");
+      toast.success("Login successful");
+    });
+  };
   return (
     <div className="flex justify-center">
       <Helmet>
@@ -15,7 +36,7 @@ const Login = () => {
         <h2 className="text-3xl font-extrabold text-center mb-10">
           Login your account
         </h2>
-        <form className="px-10 ">
+        <form onSubmit={handleLogin} className="px-10 ">
           <div className="form-control">
             <label className="label">
               <span className="label-text text-lg font-semibold">Email</span>
@@ -24,7 +45,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="email"
-               className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
+              className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
               required
             />
           </div>
@@ -36,7 +57,7 @@ const Login = () => {
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="password"
-               className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
+              className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
               required
             />
             <button
@@ -72,7 +93,7 @@ const Login = () => {
 
         <div className="card rounded-box flex items-center justify-center gap-2">
           <span className="font-semibold">Continue with Google</span>
-         <GoogleLogin></GoogleLogin>
+          <GoogleLogin></GoogleLogin>
         </div>
 
         <p className="text-center mb-10 mt-5">
