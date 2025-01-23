@@ -4,10 +4,11 @@ import { Link, NavLink } from "react-router-dom";
 //import Theme from "./Theme";
 //import logo from "../assets/logo.svg";
 import { AuthContext } from "../../provider/AuthProvider";
-
+import useAdmin from "../../hook/useAdmin";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [isAdmin] = useAdmin();
   const links = (
     <>
       <li>
@@ -22,30 +23,12 @@ const Navbar = () => {
           Home
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to="/foods"
-          className={({ isActive }) =>
-            isActive
-              ? "text-primaryColor font-bold text-lg"
-              : "font-bold text-lg"
-          }
-        >
-          All Foods
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/gallery"
-          className={({ isActive }) =>
-            isActive
-              ? "text-primaryColor font-bold text-lg"
-              : "font-bold text-lg"
-          }
-        >
-          Gallery
-        </NavLink>
-      </li>
+
+      {user && isAdmin && (
+        <li>
+          <Link to="/dashboard">Dashboard</Link>
+        </li>
+      )}
     </>
   );
   return (
@@ -76,13 +59,13 @@ const Navbar = () => {
             </label>
           </div>
 
-            <div className="flex-1 ">
-              {/* <img className="lg:w-[70px] w-[50px] " src={logo} alt="" /> */}
-              <p className="font-bold lg:text-3xl text-xl ml-3">
-                {" "}
-                Fradel and Spies
-              </p>
-            </div>
+          <div className="flex-1 ">
+            {/* <img className="lg:w-[70px] w-[50px] " src={logo} alt="" /> */}
+            <p className="font-bold lg:text-3xl text-xl ml-3">
+              {" "}
+              Fradel and Spies
+            </p>
+          </div>
 
           <div className="hidden flex-none lg:block w-[40%]">
             <ul className="flex flex-row gap-10">
