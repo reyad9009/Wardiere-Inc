@@ -1,5 +1,8 @@
-import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
+import useAdmin from "../hook/useAdmin";
+import useHr from "../hook/useHr";
 
 const Dashboard = () => {
   // Drawer toggle function
@@ -9,21 +12,28 @@ const Dashboard = () => {
       drawerCheckbox.checked = !drawerCheckbox.checked;
     }
   };
+  const { user } = useContext(AuthContext);
+  const [isAdmin] = useAdmin();
+  const [isHr] = useHr();
 
   const links = (
     <>
+      {user && isAdmin && (
+        <li>
+          <Link onClick={toggleDrawer} to="/dashboard/all-employee">
+            All Employee
+          </Link>
+        </li>
+      )}
+      {
+        user && isHr && (
+          <li>
+            <Link>HR</Link>
+          </li>
+        )
+      }
       <li>
-        <NavLink
-          to="all-employee"
-          onClick={toggleDrawer} // Close drawer on link click
-          className={({ isActive }) =>
-            isActive
-              ? "text-primaryColor font-bold text-lg"
-              : "font-bold text-lg"
-          }
-        >
-          All Employee
-        </NavLink>
+        <Link to="/">Home</Link>
       </li>
     </>
   );
@@ -35,9 +45,9 @@ const Dashboard = () => {
         {/* Navbar */}
         <div className="navbar w-full bg-gray-100 px-4 shadow-md">
           <div className="flex-none">
-            <button
-              onClick={toggleDrawer} // Open drawer on button click
-              aria-label="Open Sidebar"
+            <label
+              htmlFor="my-drawer-3"
+              aria-label="open sidebar"
               className="btn btn-square btn-ghost"
             >
               <svg
@@ -45,7 +55,6 @@ const Dashboard = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 className="inline-block h-6 w-6 stroke-current"
-                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -54,11 +63,9 @@ const Dashboard = () => {
                   d="M4 6h16M4 12h16M4 18h16"
                 ></path>
               </svg>
-            </button>
+            </label>
           </div>
-          <div className="flex-1 text-center font-bold text-xl">
-            Dashboard
-          </div>
+          <div className="flex-1 text-center font-bold text-xl">Dashboard</div>
         </div>
         <div className="max-w-7xl mx-auto">
           <Outlet />
@@ -67,8 +74,12 @@ const Dashboard = () => {
 
       {/* Drawer */}
       <div className="drawer-side">
-        <label htmlFor="my-drawer-3" aria-label="Close Sidebar"></label>
-        <ul className="menu min-h-full w-60 mt-16 p-4 rounded-r-xl bg-teal-400">
+        <label
+          htmlFor="my-drawer-3"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
+        <ul className="menu bg-base-200 min-h-full w-60 p-4 rounded-r-xl">
           {links}
         </ul>
       </div>

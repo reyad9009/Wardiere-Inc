@@ -94,34 +94,26 @@ const AllEmployee = () => {
         <h2 className="text-3xl">All Users</h2>
         <h2 className="text-3xl">Total Users: {nonAdminUsers.length}</h2>
       </div>
-      <div className="w-full">
+      <div className="overflow-hidden shadow-md rounded-lg">
         <table className="table table-zebra w-full">
           {/* head */}
           <thead className="uppercase bg-[#f55353] text-[#e5e7eb]">
             <tr className="border border-gray-300">
-              <td className="py-6 text-center font-bold lg:p-4 lg:block hidden">
-                Si
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Name</td>
-              <td className="py-6 text-center font-bold lg:p-4">Email</td>
-              <td className="py-6 text-center font-bold lg:p-4">Designation</td>
-              <td className="py-6 text-center font-bold lg:p-4">
-                Bank Account No
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Salary</td>
-              <td className="py-6 text-center font-bold lg:p-4">
-                Adjust Salary
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Fire</td>
-              <td className="py-6 text-center font-bold lg:p-4">Make HR</td>
-              <td className="py-6 text-center font-bold lg:p-4 lg:block hidden">
-                Details
-              </td>
+              <td className="py-6 text- font-bold ">Si</td>
+              <td className="py-6  font-bold ">Name</td>
+              <td className="py-6  font-bold ">Email</td>
+              <td className="py-6  font-bold ">Designation</td>
+              <td className="py-6  font-bold ">Bank Account No</td>
+              <td className="py-6  font-bold ">Salary</td>
+              <td className="py-6  font-bold ">Adjust Salary</td>
+              <td className="py-6 font-bold text-center">Fire</td>
+              <td className="py-6 font-bold ">Make HR</td>
+              <td className="py-6  font-bold  ">Details</td>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {nonAdminUsers.map((user, index) => (
-              <tr key={user._id}>
+              <tr key={user._id} className="">
                 <th>{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
@@ -180,20 +172,20 @@ const AllEmployee = () => {
                   ) : (
                     <button
                       onClick={() => handleChangeUser(user)}
-                      className="btn btn-ghost btn-lg"
+                      className="btn  btn-ghost"
                     >
                       <GiSmallFire className="text-red-600" />
                     </button>
                   )}
                 </td>
 
-                <td>
+                <td className="text-center">
                   {user.role === "hr" ? (
                     "HR"
                   ) : (
                     <button
                       onClick={() => handleMakeHr(user)}
-                      className="btn btn-lg bg-orange-500"
+                      className="btn bg-orange-500"
                     >
                       Make HR
                     </button>

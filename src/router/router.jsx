@@ -30,6 +30,8 @@ export const router = createBrowserRouter([
     path: "dashboard",
     element: <Dashboard></Dashboard>,
     children: [
+
+      // Admin only
       {
         path: "all-employee",
         element: (
