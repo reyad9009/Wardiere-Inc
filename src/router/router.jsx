@@ -5,8 +5,7 @@ import Login from "../pages/Auth/UserAuth/Login";
 import Register from "../pages/Auth/UserAuth/Register";
 import Dashboard from "../layout/Dashboard";
 import AllEmployee from "../pages/Dashboard/Admin/AllEmployee";
-
-
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -28,13 +27,17 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: 'dashboard',
+    path: "dashboard",
     element: <Dashboard></Dashboard>,
     children: [
       {
-        path: 'all-employee',
-        element: <AllEmployee></AllEmployee>
-      }
-    ]
-  }
+        path: "all-employee",
+        element: (
+          <AdminRoute>
+            <AllEmployee></AllEmployee>
+          </AdminRoute>
+        ),
+      },
+    ],
+  },
 ]);

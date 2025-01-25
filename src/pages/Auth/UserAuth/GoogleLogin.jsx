@@ -5,11 +5,12 @@ import useAuth from "../../../hook/useAuth";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 
+
 const GoogleLogin = () => {
   const { googleSignIn } = useAuth();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   // Google login
   const handleGoogleSignIn = () => {
@@ -26,7 +27,8 @@ const GoogleLogin = () => {
       };
       axiosPublic.post("/users", userInfo).then((res) => {
         console.log(res.data);
-        navigate(location?.state ? location.state : "/");
+        // navigate(location?.state ? location.state : "/");
+        navigate('/')
         toast.success("Registration successful");
       });
     });

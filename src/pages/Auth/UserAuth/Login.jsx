@@ -10,8 +10,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation()
-  const from = location.state?.from?.pathname || "/";
+  //const location = useLocation()
+  // const from = location.state?.from?.pathname || "/";
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -24,7 +24,8 @@ const Login = () => {
     signIn(email, password).then((result) => {
       const user = result.user;
       console.log(user);
-      navigate(from, { replace: true });
+      // navigate(from, { replace: true });
+      navigate('/')
       toast.success("Login successful");
     });
   };

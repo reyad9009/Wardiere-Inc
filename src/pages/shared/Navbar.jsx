@@ -1,36 +1,19 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
-// import { Tooltip } from "react-tooltip";
-//import Theme from "./Theme";
-//import logo from "../assets/logo.svg";
 import { AuthContext } from "../../provider/AuthProvider";
-import useAdmin from "../../hook/useAdmin";
-
-
+//import useAdmin from "../../hook/useAdmin";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
-  const [isAdmin] = useAdmin();
+  // big problem here
+//  const [isAdmin] = useAdmin();
   const links = (
     <>
-      <li>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "text-primaryColor font-bold text-lg"
-              : "font-bold text-lg"
-          }
-        >
-          Home
-        </NavLink>
-      </li>
 
-      {user && isAdmin && (
         <li>
           <Link to="/dashboard">Dashboard</Link>
         </li>
-      )}
+  
     </>
   );
   return (
@@ -101,24 +84,7 @@ const Navbar = () => {
                   <ul
                     tabIndex={0}
                     className="menu menu-sm dropdown-content bg-primaryColor rounded-box z-50 mt-3 w-52 p-3 shadow space-y-2"
-                  >
-                    <li>
-                      <NavLink to={`/my-foods`} className="text-xl">
-                        My Food
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="/add-food" className="text-xl">
-                        Add Food
-                      </NavLink>
-                    </li>
-
-                    <li>
-                      <NavLink to="/my-orders" className="text-xl">
-                        My Orders
-                      </NavLink>
-                    </li>
-                  </ul>
+                  ></ul>
                 </div>
               ) : (
                 <div className=""></div>
