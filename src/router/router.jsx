@@ -6,6 +6,7 @@ import Register from "../pages/Auth/UserAuth/Register";
 import Dashboard from "../layout/Dashboard";
 import AllEmployee from "../pages/Dashboard/Admin/AllEmployee";
 import AdminRoute from "./AdminRoute";
+import EmployeeList from "../pages/Dashboard/Hr/EmployeeList";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,12 @@ export const router = createBrowserRouter([
     path: "dashboard",
     element: <Dashboard></Dashboard>,
     children: [
+
+      // HR only
+      {
+        path: 'employee-list',
+        element: <EmployeeList></EmployeeList>
+      },
 
       // Admin only
       {

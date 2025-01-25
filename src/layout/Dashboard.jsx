@@ -25,13 +25,14 @@ const Dashboard = () => {
           </Link>
         </li>
       )}
-      {
-        user && isHr && (
-          <li>
-            <Link>HR</Link>
-          </li>
-        )
-      }
+      {user && isHr && (
+        <li>
+          <Link onClick={toggleDrawer} to="/dashboard/employee-list">
+          Employee List
+          </Link>
+        </li>
+      )}
+      
       <li>
         <Link to="/">Home</Link>
       </li>
