@@ -8,6 +8,7 @@ import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import { FaEdit } from "react-icons/fa";
 import { FcDeleteRow } from "react-icons/fc";
+import Swal from "sweetalert2";
 
 const WorkSheet = () => {
   const {
@@ -28,8 +29,16 @@ const WorkSheet = () => {
     },
   });
 
+
   // Watch the selected date
   const selectedDate = watch("date");
+ // Sort userTask by date in descending order (newest first)
+const sortedTasks = userTask.sort((a, b) => {
+  const dateA = moment(a.date, "MM/DD/YYYY");
+  const dateB = moment(b.date, "MM/DD/YYYY");
+  return dateB - dateA; // Newest first
+});
+
 
   // Set default value for the date field to the current date
   useEffect(() => {
@@ -53,6 +62,31 @@ const WorkSheet = () => {
       toast.error("Failed to add task. Please try again.");
     }
   };
+
+  const handleDeleteTask = (userTask) => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure.delete(`/task/${userTask._id}`).then((res) => {
+            if (res.data.deletedCount  > 0) {
+              refetch();
+              Swal.fire({
+                title: "Updated!",
+                text: "User has been updated successfully.",
+                icon: "success",
+              });
+            }
+          });
+        }
+      });
+    };
 
   return (
     <div className="mt-16">
@@ -131,8 +165,8 @@ const WorkSheet = () => {
           </tr>
         </thead>
         <tbody>
-          {userTask.map((task) => (
-            <tr key={task.id}>
+          {sortedTasks.map((task) => (
+            <tr key={task._id}>
               <td className="border p-2">{task.task}</td>
               <td className="border p-2">{task.hours}</td>
               <td className="border p-2">{task.date}</td>
@@ -146,7 +180,7 @@ const WorkSheet = () => {
               </td>
               <td className="border p-2 text-center">
                 <button
-                  onClick={() => handleDelete(task.id)}
+                  onClick={() => handleDeleteTask(task)}
                   className="text-red-500"
                 >
                   <FcDeleteRow  className="text-3xl"/>
