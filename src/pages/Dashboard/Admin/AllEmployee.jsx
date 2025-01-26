@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
-import { FaEdit} from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import useAxiosSecure from "../../../hook/useAxiosSecure";
 import { GiSmallFire } from "react-icons/gi";
 import { TbListDetails } from "react-icons/tb";
@@ -27,7 +27,9 @@ const AllEmployee = () => {
   });
 
   // Filter users to exclude admins
- const nonAdminUsers = users.filter((user) => user.role === "hr" || user.verified === true);
+  const nonAdminUsers = users.filter(
+    (user) => user.role === "hr" || user.verified === true
+  );
 
   const handleMakeHr = (user) => {
     axiosSecure.patch(`/users/hr/${user._id}`).then((res) => {

@@ -7,6 +7,7 @@ import Dashboard from "../layout/Dashboard";
 import AllEmployee from "../pages/Dashboard/Admin/AllEmployee";
 import AdminRoute from "./AdminRoute";
 import EmployeeList from "../pages/Dashboard/Hr/EmployeeList";
+import WorkSheet from "../pages/Dashboard/Employee/WorkSheet";
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +32,10 @@ export const router = createBrowserRouter([
     path: "dashboard",
     element: <Dashboard></Dashboard>,
     children: [
-
+      {
+        path: 'work-sheet',
+        element: <WorkSheet></WorkSheet>
+      },
       // HR only
       {
         path: 'employee-list',

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import GoogleLogin from "./GoogleLogin";
+import { preinit } from "react-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -141,7 +142,7 @@ const RegistrationForm = () => {
               className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
             >
               <option value="">Select Role</option>
-              <option value="Employee">Employee</option>
+              <option value="employee">Employee</option>
               <option value="HR">HR</option>
             </select>
             {errors.role && (
@@ -231,3 +232,6 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
+
+
+

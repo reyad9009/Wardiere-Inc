@@ -20,7 +20,7 @@ const GoogleLogin = () => {
         email: result.user?.email,
         name: result.user?.displayName,
         photo: result.user.photoURL,
-        role: "Employee",
+        role: "employee",
         bankAccountNo: "1501076021804",
         salary: 20000,
         designation: "Sales Assistant",

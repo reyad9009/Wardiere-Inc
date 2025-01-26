@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import useAdmin from "../hook/useAdmin";
 import useHr from "../hook/useHr";
+import useEmployee from "../hook/useEmployee";
 
 const Dashboard = () => {
   // Drawer toggle function
@@ -15,6 +16,7 @@ const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [isAdmin] = useAdmin();
   const [isHr] = useHr();
+  const [isEmployee] = useEmployee();
 
   const links = (
     <>
@@ -29,6 +31,14 @@ const Dashboard = () => {
         <li>
           <Link onClick={toggleDrawer} to="/dashboard/employee-list">
           Employee List
+          </Link>
+        </li>
+      )}
+
+      {user && isEmployee && (
+        <li>
+          <Link onClick={toggleDrawer} to="/dashboard/work-sheet">
+          Work Sheet
           </Link>
         </li>
       )}
