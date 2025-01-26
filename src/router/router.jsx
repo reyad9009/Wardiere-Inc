@@ -8,6 +8,7 @@ import AllEmployee from "../pages/Dashboard/Admin/AllEmployee";
 import AdminRoute from "./AdminRoute";
 import EmployeeList from "../pages/Dashboard/Hr/EmployeeList";
 import WorkSheet from "../pages/Dashboard/Employee/WorkSheet";
+import Progress from "../pages/Dashboard/Hr/Progress";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: 'employee-list',
         element: <EmployeeList></EmployeeList>
+      },
+      {
+        path: 'progress',
+        element: <Progress></Progress>
       },
 
       // Admin only

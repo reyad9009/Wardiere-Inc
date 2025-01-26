@@ -9,8 +9,12 @@ import { useQuery } from "@tanstack/react-query";
 import { FaEdit } from "react-icons/fa";
 import { FcDeleteRow } from "react-icons/fc";
 import Swal from "sweetalert2";
+import useAuth from "../../../hook/useAuth";
 
 const WorkSheet = () => {
+  const {user} = useAuth();
+  console.log(user?.email)
+  console.log(user?.displayName)
   const {
     register,
     handleSubmit,
@@ -25,9 +29,9 @@ const WorkSheet = () => {
   const axiosSecure = useAxiosSecure();
 
   const { data: userTask = [], refetch } = useQuery({
-    queryKey: ["userTask"],
+    queryKey: ["userTask", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/task");
+      const res = await axiosSecure.get(`/task/${user?.email}`);
       return res.data;
     },
   });
@@ -49,6 +53,8 @@ const WorkSheet = () => {
   const handleAddTask = async (data) => {
     const formattedDate = moment(data.date).format("MM/DD/YYYY");
     const taskData = {
+      name: user?.displayName,
+      email: user?.email,
       task: data.task,
       hours: data.hours,
       date: formattedDate,
