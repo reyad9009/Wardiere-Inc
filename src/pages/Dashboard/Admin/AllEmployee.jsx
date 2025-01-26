@@ -6,6 +6,7 @@ import useAxiosSecure from "../../../hook/useAxiosSecure";
 import { GiSmallFire } from "react-icons/gi";
 import { TbListDetails } from "react-icons/tb";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const AllEmployee = () => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -14,6 +15,7 @@ const AllEmployee = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -46,23 +48,35 @@ const AllEmployee = () => {
     });
   };
 
-  const handleAdjustSalary = (data) => {
-    axiosSecure
-      .patch(`/users/salary/${selectedUser._id}`, { salary: data.salary })
-      .then((res) => {
-        if (res.data.modifiedCount > 0) {
-          refetch();
-          reset();
-          document.getElementById("my_modal_1").close();
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: `Salary updated successfully!`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      });
+  const handleAdjustSalary = async (data) => {
+    if (!selectedUser?._id) {
+      toast.error("No user selected for salary update.");
+      return;
+    }
+
+    const updatedTask = {
+      salary: data.salary,
+    };
+
+    try {
+      const res = await axiosSecure.patch(
+        `/salary/${selectedUser._id}`,
+        updatedTask
+      );
+
+      if (res.data.modifiedCount > 0) {
+        reset();
+        refetch();
+        setSelectedUser(null); // Clear selected user after successful update
+        document.getElementById("salary_modal").close();
+        toast.success("Salary updated successfully!");
+      } else {
+        toast.error("No changes detected. Update failed.");
+      }
+    } catch (error) {
+      console.error("Error updating salary:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   const handleChangeUser = (user) => {
@@ -98,24 +112,23 @@ const AllEmployee = () => {
       </div>
       <div className="overflow-hidden shadow-md rounded-lg">
         <table className="table table-zebra w-full">
-          {/* head */}
           <thead className="uppercase bg-[#f55353] text-[#e5e7eb]">
             <tr className="border border-gray-300">
-              <td className="py-6 text- font-bold ">Si</td>
-              <td className="py-6  font-bold ">Name</td>
-              <td className="py-6  font-bold ">Email</td>
-              <td className="py-6  font-bold ">Designation</td>
-              <td className="py-6  font-bold ">Bank Account No</td>
-              <td className="py-6  font-bold ">Salary</td>
-              <td className="py-6  font-bold ">Adjust Salary</td>
+              <td className="py-6 font-bold ">Si</td>
+              <td className="py-6 font-bold ">Name</td>
+              <td className="py-6 font-bold ">Email</td>
+              <td className="py-6 font-bold ">Designation</td>
+              <td className="py-6 font-bold ">Bank Account No</td>
+              <td className="py-6 font-bold ">Salary</td>
+              <td className="py-6 font-bold ">Adjust Salary</td>
               <td className="py-6 font-bold text-center">Fire</td>
               <td className="py-6 font-bold ">Make HR</td>
-              <td className="py-6  font-bold  ">Details</td>
+              <td className="py-6 font-bold ">Details</td>
             </tr>
           </thead>
-          <tbody className="">
+          <tbody>
             {nonAdminUsers.map((user, index) => (
-              <tr key={user._id} className="">
+              <tr key={user._id}>
                 <th>{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
@@ -123,49 +136,16 @@ const AllEmployee = () => {
                 <td>{user.bankAccountNo}</td>
                 <td>{user.salary}</td>
                 <td>
-                  {/* Open the modal using document.getElementById('ID').showModal() method */}
                   <button
                     className="btn"
                     onClick={() => {
                       setSelectedUser(user);
-                      document.getElementById("my_modal_1").showModal();
+                      setValue("salary", user.salary);
+                      document.getElementById("salary_modal").showModal();
                     }}
                   >
                     <FaEdit />
                   </button>
-                  <dialog id="my_modal_1" className="modal">
-                    <div className="modal-box">
-                      <h3 className="font-bold text-lg py-4">Adjust Salary</h3>
-                      <form onSubmit={handleSubmit(handleAdjustSalary)}>
-                        <div className="form-control">
-                          <input
-                            type="number"
-                            {...register("salary", {
-                              required: "Salary is required",
-                            })}
-                            className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
-                          />
-                          {errors.salary && (
-                            <p className="text-red-500 text-sm">
-                              {errors.salary.message}
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          type="submit"
-                          className="btn bg-primaryColor mt-4"
-                        >
-                          Submit
-                        </button>
-                      </form>
-                      <div className="modal-action">
-                        <form method="dialog">
-                          {/* if there is a button in form, it will close the modal */}
-                          <button className="btn">Close</button>
-                        </form>
-                      </div>
-                    </div>
-                  </dialog>
                 </td>
 
                 <td>
@@ -174,7 +154,7 @@ const AllEmployee = () => {
                   ) : (
                     <button
                       onClick={() => handleChangeUser(user)}
-                      className="btn  btn-ghost"
+                      className="btn btn-ghost"
                     >
                       <GiSmallFire className="text-red-600" />
                     </button>
@@ -201,6 +181,38 @@ const AllEmployee = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Modal */}
+      <dialog id="salary_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg py-4">Adjust Salary</h3>
+          <form onSubmit={handleSubmit(handleAdjustSalary)}>
+            <div className="form-control">
+              <input
+                type="number"
+                {...register("salary", {
+                  required: "Salary is required",
+                })}
+                className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
+              />
+              {errors.salary && (
+                <p className="text-red-500 text-sm">{errors.salary.message}</p>
+              )}
+            </div>
+            <button type="submit" className="btn bg-primaryColor mt-4">
+              Submit
+            </button>
+          </form>
+          <div className="modal-action">
+            <button
+              onClick={() => document.getElementById("salary_modal").close()}
+              className="btn"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
