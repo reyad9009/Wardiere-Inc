@@ -30,7 +30,7 @@ const Dashboard = () => {
       {user && isHr && (
         <li>
           <Link onClick={toggleDrawer} to="/dashboard/employee-list">
-          Employee List
+            Employee List
           </Link>
         </li>
       )}
@@ -38,11 +38,11 @@ const Dashboard = () => {
       {user && isEmployee && (
         <li>
           <Link onClick={toggleDrawer} to="/dashboard/work-sheet">
-          Work Sheet
+            Work Sheet
           </Link>
         </li>
       )}
-      
+
       <li>
         <Link to="/">Home</Link>
       </li>
