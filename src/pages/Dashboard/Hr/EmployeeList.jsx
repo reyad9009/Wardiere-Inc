@@ -4,12 +4,13 @@ import useAxiosSecure from "../../../hook/useAxiosSecure";
 import Swal from "sweetalert2";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import { FaWindowClose } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../Payment/CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
+
 const EmployeeList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
 
@@ -85,15 +86,20 @@ const EmployeeList = () => {
                     {user.verified ? (
                       <button
                         className="btn"
+                        type="button"
                         onClick={() => {
                           setSelectedUser(user);
-                          document.getElementById("payment_modal").showModal();
+                          setIsModalOpen(true);
                         }}
                       >
                         Pay
                       </button>
                     ) : (
-                      <button disabled className="btn bg-slate-400">
+                      <button
+                        disabled
+                        type="button"
+                        className="btn bg-slate-400"
+                      >
                         Pay
                       </button>
                     )}
@@ -107,20 +113,60 @@ const EmployeeList = () => {
 
       {/* Payment Modal */}
       {selectedUser && (
-        <dialog id="payment_modal" className="modal">
+        <dialog className={`modal ${isModalOpen ? "modal-open" : ""}`}>
           <div className="modal-box">
             <h3 className="font-bold text-lg">
               Payment for {selectedUser.name}
             </h3>
+            <h1>{selectedUser.salary}</h1>
+
+            <form onSubmit={(e) => handlePaymentSubmit(e, selectedUser)}>
+              <div className="my-2">
+                <label className="block font-medium mb-1">Salary:</label>
+                <input
+                  value={selectedUser.salary}
+                  readOnly
+                  type="text"
+                  className="input input-bordered w-full focus:outline-[#ffffff] focus:border-[#fb5402]"
+                />
+              </div>
+              <div className="my-2">
+                <label className="block font-medium mb-1">Month:</label>
+                <input
+                  type="text"
+                  placeholder="e.g., January"
+                  className="input input-bordered w-full focus:outline-[#ffffff] focus:border-[#fb5402]"
+                  required
+                  id="paymentMonth"
+                />
+              </div>
+              <div className="my-2">
+                <label className="block font-medium mb-1">Year:</label>
+                <input
+                  type="number"
+                  placeholder="e.g., 2025"
+                  className="input input-bordered w-full focus:outline-[#ffffff] focus:border-[#fb5402]"
+                  required
+                  id="paymentYear"
+                />
+              </div>
+            </form>
             <Elements stripe={stripePromise}>
-              <CheckoutForm user={selectedUser} salary={selectedUser.salary} />
+              <CheckoutForm
+                user={selectedUser}
+                salary={selectedUser.salary}
+                monthFieldId="paymentMonth"
+                yearFieldId="paymentYear"
+              />
             </Elements>
+
             <div className="modal-action">
               <button
+                type="button"
                 className="btn"
                 onClick={() => {
+                  setIsModalOpen(false);
                   setSelectedUser(null);
-                  document.getElementById("payment_modal").close();
                 }}
               >
                 Close

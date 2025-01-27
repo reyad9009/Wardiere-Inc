@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hook/useAxiosSecure";
 
-const CheckoutForm = ({ user, salary }) => {
+const CheckoutForm = ({ user, salary ,monthFieldId, yearFieldId }) => {
   const [error, setError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
-  console.log(salary);
+  console.log({salary, user, monthFieldId, yearFieldId});
 
   useEffect(() => {
     if (salary && parseFloat(salary) > 0) {
@@ -35,13 +35,13 @@ const CheckoutForm = ({ user, salary }) => {
     const card = elements.getElement(CardElement);
     if (!card) return;
 
-    // const month = document.getElementById(monthFieldId).value;
-    // const year = document.getElementById(yearFieldId).value;
+    const month = document.getElementById(monthFieldId).value;
+    const year = document.getElementById(yearFieldId).value;
 
-    // if (!month || !year) {
-    //   setError("Please provide Month and Year.");
-    //   return;
-    // }
+    if (!month || !year) {
+      setError("Please provide Month and Year.");
+      return;
+    }
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
