@@ -4,10 +4,14 @@ import useAxiosSecure from "../../../hook/useAxiosSecure";
 import Swal from "sweetalert2";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import { FaWindowClose } from "react-icons/fa";
-
+import { Link } from "react-router-dom";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../../Payment/CheckoutForm";
+import { loadStripe } from "@stripe/stripe-js";
 const EmployeeList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
-  console.log(selectedUser)
+
+  const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
 
   const axiosSecure = useAxiosSecure();
   const { data: users = [], refetch } = useQuery({
@@ -17,7 +21,7 @@ const EmployeeList = () => {
       return res.data;
     },
   });
-  // Filter users to exclude admins
+
   const nonAdminUsers = users.filter(
     (user) => user.role !== "admin" && user.role !== "hr"
   );
@@ -46,28 +50,25 @@ const EmployeeList = () => {
         </div>
         <div className="overflow-hidden shadow-md rounded-lg">
           <table className="table table-zebra w-full">
-            {/* head */}
             <thead className="uppercase bg-[#f55353] text-[#e5e7eb]">
               <tr className="border border-gray-300">
                 <td className="py-6 text- font-bold ">Si</td>
-                <td className="py-6  font-bold ">Name</td>
-                <td className="py-6  font-bold ">Email</td>
-                <td className="py-6  font-bold ">Verified</td>
-                <td className="py-6  font-bold ">Bank Account No</td>
-                <td className="py-6  font-bold ">Salary</td>
-                <td className="py-6  font-bold ">Pay</td>
-                <td className="py-6  font-bold ">Details</td>
+                <td className="py-6 font-bold">Name</td>
+                <td className="py-6 font-bold">Email</td>
+                <td className="py-6 font-bold">Verified</td>
+                <td className="py-6 font-bold">Bank Account No</td>
+                <td className="py-6 font-bold">Salary</td>
+                <td className="py-6 font-bold">Pay</td>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody>
               {nonAdminUsers.map((user, index) => (
-                <tr key={user._id} className="">
+                <tr key={user._id}>
                   <th>{index + 1}</th>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-
                   <td className="text-center">
-                    {user.verified === true ? (
+                    {user.verified ? (
                       <VscVerifiedFilled className="text-green-600 text-2xl" />
                     ) : (
                       <button
@@ -78,52 +79,56 @@ const EmployeeList = () => {
                       </button>
                     )}
                   </td>
-
                   <td>{user.bankAccountNo}</td>
                   <td>{user.salary}</td>
                   <td>
-                    {user.verified !== true ? (
-                      <button disabled className="btn bg-slate-400">
-                        Pa
+                    {user.verified ? (
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          setSelectedUser(user);
+                          document.getElementById("payment_modal").showModal();
+                        }}
+                      >
+                        Pay
                       </button>
                     ) : (
-                      <div>
-                        {/* Open the modal using document.getElementById('ID').showModal() method */}
-                        <button
-                          className="btn"
-                          onClick={() => {
-                            setSelectedUser(user);
-                            document.getElementById("my_modal_1").showModal();
-                          }}
-                        >
-                          Pay
-                        </button>
-                        <dialog id="my_modal_1" className="modal">
-                          <div className="modal-box">
-                            <h3 className="font-bold text-lg">Hello!</h3>
-                            <input
-                              defaultValue={user.salary}
-
-                              className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
-                            />
-                            <div className="modal-action">
-                              <form method="dialog">
-                                {/* if there is a button in form, it will close the modal */}
-                                <button className="btn">Close</button>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
-                      </div>
+                      <button disabled className="btn bg-slate-400">
+                        Pay
+                      </button>
                     )}
                   </td>
-                  <td>Details</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {selectedUser && (
+        <dialog id="payment_modal" className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">
+              Payment for {selectedUser.name}
+            </h3>
+            <Elements stripe={stripePromise}>
+              <CheckoutForm user={selectedUser} salary={selectedUser.salary} />
+            </Elements>
+            <div className="modal-action">
+              <button
+                className="btn"
+                onClick={() => {
+                  setSelectedUser(null);
+                  document.getElementById("payment_modal").close();
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };
