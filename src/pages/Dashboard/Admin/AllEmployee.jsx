@@ -53,7 +53,7 @@ const AllEmployee = () => {
       toast.error("No user selected for salary update.");
       return;
     }
-
+    console.log(data.salary);
     const updatedTask = {
       salary: data.salary,
     };
@@ -192,6 +192,10 @@ const AllEmployee = () => {
                 type="number"
                 {...register("salary", {
                   required: "Salary is required",
+                  min: {
+                    value: selectedUser?.salary || 0, // Set the minimum value as the current salary
+                    message: `Salary must be at least ${selectedUser?.salary}`,
+                  },
                 })}
                 className="input input-bordered focus:outline-[#ffffff] focus:border-[#fb5402]"
               />
