@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hook/useAxiosSecure";
 
-const CheckoutForm = ({ user, salary ,monthFieldId, yearFieldId }) => {
+const CheckoutForm = ({ user, salary, monthFieldId, yearFieldId }) => {
   const [error, setError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
-  console.log({salary, user, monthFieldId, yearFieldId});
+  console.log({ salary, user, monthFieldId, yearFieldId });
+  console.log(user._id);
 
   useEffect(() => {
     if (salary && parseFloat(salary) > 0) {
@@ -71,10 +72,14 @@ const CheckoutForm = ({ user, salary ,monthFieldId, yearFieldId }) => {
 
     if (paymentIntent.status === "succeeded") {
       setTransactionId(paymentIntent.id);
-
       // Save payment details
       const payment = {
+            
+        userId: user._id,
         email: user.email,
+        name: user.name,
+        designation: user.designation,
+        photo: user.photo,
         salary,
         month,
         year,

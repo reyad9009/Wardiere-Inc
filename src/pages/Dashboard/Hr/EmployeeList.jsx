@@ -7,10 +7,12 @@ import { FaWindowClose } from "react-icons/fa";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../Payment/CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
+import { Link } from "react-router-dom";
 
 const EmployeeList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [salary, setSalary] = useState("");
 
   const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
 
@@ -60,6 +62,7 @@ const EmployeeList = () => {
                 <td className="py-6 font-bold">Bank Account No</td>
                 <td className="py-6 font-bold">Salary</td>
                 <td className="py-6 font-bold">Pay</td>
+                <td className="py-6 font-bold">Details</td>
               </tr>
             </thead>
             <tbody>
@@ -89,6 +92,7 @@ const EmployeeList = () => {
                         type="button"
                         onClick={() => {
                           setSelectedUser(user);
+                          setSalary(user.salary);
                           setIsModalOpen(true);
                         }}
                       >
@@ -103,6 +107,14 @@ const EmployeeList = () => {
                         Pay
                       </button>
                     )}
+                  </td>
+                  <td>
+                    <Link
+                      to={`/dashboard/payment-details/${user._id}`}
+                      className="btn"
+                    >
+                      Details
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -120,14 +132,15 @@ const EmployeeList = () => {
             </h3>
             <h1>{selectedUser.salary}</h1>
 
-            <form onSubmit={(e) => handlePaymentSubmit(e, selectedUser)}>
+            <form>
               <div className="my-2">
                 <label className="block font-medium mb-1">Salary:</label>
                 <input
-                  value={selectedUser.salary}
-                  readOnly
-                  type="text"
+                  defaultValue={salary}
+                  onChange={(e) => setSalary(e.target.value)} // Update salary state
+                  type="number"
                   className="input input-bordered w-full focus:outline-[#ffffff] focus:border-[#fb5402]"
+                  id="salary"
                 />
               </div>
               <div className="my-2">
@@ -154,7 +167,7 @@ const EmployeeList = () => {
             <Elements stripe={stripePromise}>
               <CheckoutForm
                 user={selectedUser}
-                salary={selectedUser.salary}
+                salary={salary}
                 monthFieldId="paymentMonth"
                 yearFieldId="paymentYear"
               />

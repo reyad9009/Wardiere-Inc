@@ -48,11 +48,14 @@ export const router = createBrowserRouter([
         element: <Progress></Progress>,
       },
       {
-        path: "slug",
+        path: "/dashboard/payment-details/:userId",
         element: <Slug></Slug>,
+        loader: ({ params }) =>
+          fetch(
+            `http://localhost:5000/dashboard/payment-details/${params.userId}`
+          ),
       },
 
-      // Admin only
       {
         path: "all-employee",
         element: (
