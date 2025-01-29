@@ -10,8 +10,6 @@ const CheckoutForm = ({ user, salary, monthFieldId, yearFieldId }) => {
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
-  console.log({ salary, user, monthFieldId, yearFieldId });
-  console.log(user._id);
 
   useEffect(() => {
     if (salary && parseFloat(salary) > 0) {
@@ -44,13 +42,30 @@ const CheckoutForm = ({ user, salary, monthFieldId, yearFieldId }) => {
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card,
-    });
+    // Check if payment for the same month and year already exists
+    try {
+      const checkPaymentResponse = await axiosSecure.get(
+        `/check-payment?userId=${user._id}&month=${month}&year=${year}`
+      );
 
-    if (error) {
-      setError(error.message);
+      if (checkPaymentResponse.data.exists) {
+        setError(`Payment for ${month} ${year} already exists.`);
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking payment:", error);
+      setError("An error occurred while checking payment history.");
+      return;
+    }
+
+    const { error: paymentMethodError, paymentMethod } =
+      await stripe.createPaymentMethod({
+        type: "card",
+        card,
+      });
+
+    if (paymentMethodError) {
+      setError(paymentMethodError.message);
       return;
     }
 
@@ -72,9 +87,9 @@ const CheckoutForm = ({ user, salary, monthFieldId, yearFieldId }) => {
 
     if (paymentIntent.status === "succeeded") {
       setTransactionId(paymentIntent.id);
+
       // Save payment details
       const payment = {
-            
         userId: user._id,
         email: user.email,
         name: user.name,
@@ -84,13 +99,11 @@ const CheckoutForm = ({ user, salary, monthFieldId, yearFieldId }) => {
         month,
         year,
         transactionId: paymentIntent.id,
-        date: new Date(),
+        date: "",
         status: "pending",
       };
-      console.log(payment);
 
       const res = await axiosSecure.post("/payments", payment);
-      console.log(res.data);
       if (res.data?.paymentResult?.insertedId) {
         Swal.fire({
           position: "top-end",

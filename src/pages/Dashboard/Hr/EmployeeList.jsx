@@ -145,13 +145,25 @@ const EmployeeList = () => {
               </div>
               <div className="my-2">
                 <label className="block font-medium mb-1">Month:</label>
-                <input
-                  type="text"
-                  placeholder="e.g., January"
-                  className="input input-bordered w-full focus:outline-[#ffffff] focus:border-[#fb5402]"
+                <select
+                  className="select select-bordered w-full focus:outline-[#ffffff] focus:border-[#fb5402]"
                   required
                   id="paymentMonth"
-                />
+                >
+                  <option value="">Select Month</option>
+                  <option value="January">January</option>
+                  <option value="February">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                </select>
               </div>
               <div className="my-2">
                 <label className="block font-medium mb-1">Year:</label>

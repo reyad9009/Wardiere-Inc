@@ -1,73 +1,82 @@
 import React from "react";
+import useAxiosSecure from "../../../hook/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 
 const Payroll = () => {
+  const axiosSecure = useAxiosSecure();
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/payroll");
+      return res.data;
+    },
+  });
+
+  const handlePaySalary = (user) => {
+    const formattedDate = moment().format("MM/DD/YYYY");
+    const payDate = {
+      date: formattedDate,
+    };
+    console.log(payDate)
+    axiosSecure.patch(`/users/payroll/${user._id}`, payDate).then((res) => {
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user.name} payment successfully`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
+
   return (
     <div>
-      <div className="overflow-hidden shadow-md rounded-lg">
-        <table className="table-fixed w-full text-left border border-gray-300">
+      <div className="overflow-x-auto mt-16">
+        <table className="table">
           {/* head */}
-          <thead className="uppercase bg-[#f55353] text-[#e5e7eb]">
-            <tr className="border border-gray-300">
-              <td className="py-6 text-center font-bold lg:p-4 lg:block hidden">
-                Si
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Name</td>
-              <td className="py-6 text-center font-bold lg:p-4">Email</td>
-              <td className="py-6 text-center font-bold lg:p-4">Designation</td>
-              <td className="py-6 text-center font-bold lg:p-4">
-                Month & Years
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Amount</td>
-              <td className="py-6 text-center font-bold lg:p-4">
-                Transaction Id
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Pay</td>
-              <td className="py-6 text-center font-bold lg:p-4">Pay Date</td>
-              <td className="py-6 text-center font-bold lg:p-4 lg:block hidden">
-                Stock Status
-              </td>
-              <td className="py-6 text-center font-bold lg:p-4">Action</td>
+          <thead className="bg-teal-300">
+            <tr className="">
+              <th className="">Si</th>
+              <th className="">Name</th>
+              <th className="">Email</th>
+              <th className="">Designation</th>
+              <th className="">Month & Years</th>
+              <th className="">Amount</th>
+              <th className="">Transaction Id</th>
+              <th className="">Pay</th>
+              <th className="">Pay Date</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr key={user._id}>
+              <tr key={user._id} className="hover:bg-teal-100">
                 <th>{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.designation}</td>
-
-                <div className="flex flex-col justify-center items-center">
-                  {user.role === "admin" ? (
-                    "Admin"
-                  ) : (
-                    <td>
-                      {user.role === "hr" ? (
-                        "HR"
-                      ) : (
-                        <button
-                          onClick={() => handleMakeHr(user)}
-                          className="btn btn-lg bg-orange-500"
-                        >
-                          Make HR
-                        </button>
-                      )}
-                    </td>
-                  )}
-                </div>
+                <td>
+                  {user.month} {user.year}
+                </td>
+                <td>{user.salary} $</td>
+                <td>{user.transactionId}</td>
 
                 <td>
-                  {user.role === "admin" ? (
-                    ""
+                  {user.status === "paid" ? (
+                    "Paid"
                   ) : (
                     <button
-                      onClick={() => handleDeleteUser(user)}
-                      className="btn btn-ghost btn-lg"
+                      onClick={() => handlePaySalary(user)}
+                      className="btn btn-ghost btn-lg bg-primaryColor text-white font-bold"
                     >
-                      <FaTrashAlt className="text-red-600"></FaTrashAlt>
+                      Pay
                     </button>
                   )}
                 </td>
+                <td>{user.date}</td>
               </tr>
             ))}
           </tbody>

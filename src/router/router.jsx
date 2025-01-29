@@ -10,6 +10,7 @@ import EmployeeList from "../pages/Dashboard/Hr/EmployeeList";
 import WorkSheet from "../pages/Dashboard/Employee/WorkSheet";
 import Progress from "../pages/Dashboard/Hr/Progress";
 import Slug from "../pages/Dashboard/Hr/Slug";
+import Payroll from "../pages/Dashboard/Admin/Payroll";
 
 export const router = createBrowserRouter([
   {
@@ -34,10 +35,12 @@ export const router = createBrowserRouter([
     path: "dashboard",
     element: <Dashboard></Dashboard>,
     children: [
+      // Employee Only
       {
         path: "work-sheet",
         element: <WorkSheet></WorkSheet>,
       },
+
       // HR only
       {
         path: "employee-list",
@@ -55,7 +58,8 @@ export const router = createBrowserRouter([
             `http://localhost:5000/dashboard/payment-details/${params.userId}`
           ),
       },
-
+  
+      //Admin only
       {
         path: "all-employee",
         element: (
@@ -64,6 +68,10 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+      {
+        path: 'payroll',
+        element: <Payroll></Payroll>
+      }
     ],
   },
 ]);

@@ -20,11 +20,18 @@ const Dashboard = () => {
 
   const links = (
     <>
-    {/* Is Admin */}
+      {/* Is Admin */}
       {user && isAdmin && (
         <li>
           <Link onClick={toggleDrawer} to="/dashboard/all-employee">
             All Employee
+          </Link>
+        </li>
+      )}
+      {user && isAdmin && (
+        <li>
+          <Link onClick={toggleDrawer} to="/dashboard/payroll">
+            Payroll
           </Link>
         </li>
       )}
@@ -40,7 +47,7 @@ const Dashboard = () => {
       {user && isHr && (
         <li>
           <Link onClick={toggleDrawer} to="/dashboard/progress">
-          Progress
+            Progress
           </Link>
         </li>
       )}
