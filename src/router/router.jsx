@@ -11,6 +11,7 @@ import WorkSheet from "../pages/Dashboard/Employee/WorkSheet";
 import Progress from "../pages/Dashboard/Hr/Progress";
 import Slug from "../pages/Dashboard/Hr/Slug";
 import Payroll from "../pages/Dashboard/Admin/Payroll";
+import Contact from "../pages/Contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register></Register>,
+      },
+      {
+        path: "contact",
+        element: <Contact></Contact>
       },
     ],
   },
