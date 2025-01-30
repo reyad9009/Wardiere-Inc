@@ -19,6 +19,7 @@ const Contact = () => {
       const contactData = {
         email: data.email,
         message: data.message,
+        date: new Date(),
       };
       const res = await axiosPublic.post("/api/contact", contactData);
       if (res.data.insertedId) {
@@ -46,8 +47,8 @@ const Contact = () => {
         {/* Dummy Address */}
         <div className="mb-8 text-center">
           <p className="text-gray-700">123 Company Street</p>
-          <p className="text-gray-700">City, State, ZIP Code</p>
-          <p className="text-gray-700">Country</p>
+          <p className="text-gray-700">Eden Center, Arambag, Motijheel, Dhaka-1000</p>
+          <p className="text-gray-700">Bangladesh</p>
         </div>
 
         {/* Contact Form */}
@@ -113,7 +114,7 @@ const Contact = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-primaryColor text-white py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Sending..." : "Send Message"}
             </button>

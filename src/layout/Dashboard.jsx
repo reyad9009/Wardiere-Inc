@@ -35,6 +35,13 @@ const Dashboard = () => {
           </Link>
         </li>
       )}
+      {user && isAdmin && (
+        <li>
+          <Link onClick={toggleDrawer} to="/dashboard/messages">
+            Messages
+          </Link>
+        </li>
+      )}
 
       {/* Is HR */}
       {user && isHr && (
@@ -63,7 +70,7 @@ const Dashboard = () => {
       {user && isEmployee && (
         <li>
           <Link onClick={toggleDrawer} to="/dashboard/payment-history">
-          Payment History
+            Payment History
           </Link>
         </li>
       )}

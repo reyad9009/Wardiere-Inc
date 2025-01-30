@@ -129,13 +129,13 @@ const AllEmployee = () => {
           <tbody>
             {nonAdminUsers.map((user, index) => (
               <tr key={user._id}>
-                <th>{index + 1}</th>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.designation}</td>
-                <td>{user.bankAccountNo}</td>
-                <td>{user.salary}</td>
-                <td>
+                <th className="border-b-2">{index + 1}</th>
+                <td className="border-b-2">{user.name}</td>
+                <td className="border-b-2">{user.email}</td>
+                <td className="border-b-2">{user.designation}</td>
+                <td className="border-b-2">{user.bankAccountNo}</td>
+                <td className="border-b-2">{user.salary}</td>
+                <td className="border-b-2">
                   <button
                     className="btn"
                     onClick={() => {
@@ -148,7 +148,7 @@ const AllEmployee = () => {
                   </button>
                 </td>
 
-                <td>
+                <td className="border-b-2">
                   {user.role === "Fired" ? (
                     "Fired"
                   ) : (
@@ -161,7 +161,7 @@ const AllEmployee = () => {
                   )}
                 </td>
 
-                <td className="text-center">
+                <td className="text-center border-b-2">
                   {user.role === "hr" ? (
                     "HR"
                   ) : (
@@ -173,7 +173,7 @@ const AllEmployee = () => {
                     </button>
                   )}
                 </td>
-                <td>
+                <td className="border-b-2">
                   <TbListDetails />
                 </td>
               </tr>

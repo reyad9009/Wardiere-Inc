@@ -13,6 +13,7 @@ import Slug from "../pages/Dashboard/Hr/Slug";
 import Payroll from "../pages/Dashboard/Admin/Payroll";
 import Contact from "../pages/Contact/Contact";
 import PaymentHistory from "../pages/Dashboard/Employee/PaymentHistory";
+import Messages from "../pages/Dashboard/Admin/Messages";
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
       {
         path: "employee-list",
         element: <EmployeeList></EmployeeList>,
+      },
+      {
+        path: "messages",
+        element: <Messages></Messages>
       },
       {
         path: "progress",

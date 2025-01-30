@@ -9,7 +9,7 @@ import moment from "moment";
 const PaymentHistory = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { data: userPayment = [], refetch } = useQuery({
+  const { data: userPayment = [],} = useQuery({
     queryKey: ["userPayment", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/payment-history/${user?.email}`);
