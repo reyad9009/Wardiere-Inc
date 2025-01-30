@@ -60,6 +60,13 @@ const Dashboard = () => {
           </Link>
         </li>
       )}
+      {user && isEmployee && (
+        <li>
+          <Link onClick={toggleDrawer} to="/dashboard/payment-history">
+          Payment History
+          </Link>
+        </li>
+      )}
 
       <li>
         <Link to="/">Home</Link>

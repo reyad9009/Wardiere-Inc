@@ -12,6 +12,7 @@ import Progress from "../pages/Dashboard/Hr/Progress";
 import Slug from "../pages/Dashboard/Hr/Slug";
 import Payroll from "../pages/Dashboard/Admin/Payroll";
 import Contact from "../pages/Contact/Contact";
+import PaymentHistory from "../pages/Dashboard/Employee/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "work-sheet",
         element: <WorkSheet></WorkSheet>,
+      },
+      {
+        path: "payment-history",
+        element: <PaymentHistory></PaymentHistory>,
       },
 
       // HR only
