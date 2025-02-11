@@ -1,22 +1,64 @@
 import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
-//import useAdmin from "../../hook/useAdmin";
+import useAdmin from "../../hook/useAdmin";
+import useHr from "../../hook/useHr";
+import Swal from "sweetalert2";
+import useEmployee from "../../hook/useEmployee";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   // big problem here
-//  const [isAdmin] = useAdmin();
+  const [isAdmin] = useAdmin();
+  const [isHr] = useHr();
+  const [isEmployee] = useEmployee();
+
+  const handleLogOut = () => {
+    console.log("Logging out...");
+    logOut().then(() => {
+      console.log("Logged out successfully.");
+      Swal.fire({
+        title: "Log Out Successful.",
+        showClass: {
+          popup: "animate__animated animate__fadeInDown",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOutUp",
+        },
+      });
+    });
+  };
   const links = (
     <>
-
+      {/* 
         <li>
           <Link to="/dashboard">Dashboard</Link>
-        </li>
+        </li> */}
+      {user && isAdmin && (
         <li>
-          <Link to="/contact">Contact</Link>
+          <Link to="/dashboard/all-employee">
+            Dashboard
+          </Link>
         </li>
-  
+      )}
+      {user && isHr && (
+        <li>
+          <Link to="/dashboard/employee-list">
+            Dashboard
+          </Link>
+        </li>
+      )}
+      {user && isEmployee && (
+        <li>
+          <Link to="/dashboard/work-sheet">
+            Dashboard
+          </Link>
+        </li>
+      )}
+
+      <li>
+        <Link to="/contact">Contact</Link>
+      </li>
     </>
   );
   return (
@@ -50,28 +92,15 @@ const Navbar = () => {
           <div className="flex-1 ">
             {/* <img className="lg:w-[70px] w-[50px] " src={logo} alt="" /> */}
             <p className="font-bold lg:text-3xl text-xl ml-3">
-              {" "}
               Fradel and Spies
             </p>
           </div>
 
           <div className="hidden flex-none lg:block w-[40%]">
-            <ul className="flex flex-row gap-10">
-              {/* Navbar menu content here */}
-              {links}
-            </ul>
+            <ul className="flex flex-row gap-10">{links}</ul>
           </div>
 
           <div className="flex justify-center items-center">
-            {/* <div
-              className="mr-5 lg:block hidden"
-              data-tooltip-id="theme"
-              data-tooltip-content="dark/light theme"
-            >
-              <Theme></Theme>
-              <Tooltip id="theme"></Tooltip>
-            </div> */}
-
             <div className="md:pr-5 pr-4">
               {user && user?.email ? (
                 <div className="dropdown dropdown-end">
@@ -97,7 +126,7 @@ const Navbar = () => {
             <div className="lg:block hidden">
               {user && user?.email ? (
                 <button
-                  onClick={logOut}
+                  onClick={handleLogOut}
                   className="bg-primaryColor lg:px-8 lg:py-3 px-2 py-2 lg:text-xl text-sm font-semibold rounded-full text-white"
                 >
                   Logout
@@ -122,10 +151,6 @@ const Navbar = () => {
           className="drawer-overlay"
         ></label>
         <ul className="menu bg-base-200 min-h-full w-60 p-4 rounded-r-xl">
-          {/* Sidebar content here */}
-          {/* <div className="flex pb-3">
-            <Theme></Theme>
-          </div> */}
           {links}
 
           <div className="w-full mt-10">

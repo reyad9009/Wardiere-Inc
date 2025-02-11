@@ -14,6 +14,8 @@ import Payroll from "../pages/Dashboard/Admin/Payroll";
 import Contact from "../pages/Contact/Contact";
 import PaymentHistory from "../pages/Dashboard/Employee/PaymentHistory";
 import Messages from "../pages/Dashboard/Admin/Messages";
+import HrRoute from "./HrRoute";
+import EmployeeRoute from "./EmployeeRoute";
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +36,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "contact",
-        element: <Contact></Contact>
+        element: <Contact></Contact>,
       },
     ],
   },
@@ -45,35 +47,59 @@ export const router = createBrowserRouter([
       // Employee Only
       {
         path: "work-sheet",
-        element: <WorkSheet></WorkSheet>,
+        element: (
+          <EmployeeRoute>
+            <WorkSheet></WorkSheet>
+          </EmployeeRoute>
+        ),
       },
       {
         path: "payment-history",
-        element: <PaymentHistory></PaymentHistory>,
+        element: (
+          <EmployeeRoute>
+            <PaymentHistory></PaymentHistory>
+          </EmployeeRoute>
+        ),
       },
 
       // HR only
       {
         path: "employee-list",
-        element: <EmployeeList></EmployeeList>,
+        element: (
+          <HrRoute>
+            <EmployeeList></EmployeeList>
+          </HrRoute>
+        ),
       },
       {
         path: "messages",
-        element: <Messages></Messages>
+        element: (
+          <HrRoute>
+            <Messages></Messages>
+          </HrRoute>
+        ),
       },
       {
         path: "progress",
-        element: <Progress></Progress>,
+        element: (
+          <HrRoute>
+            <Progress></Progress>
+          </HrRoute>
+        ),
       },
       {
         path: "/dashboard/payment-details/:userId",
-        element: <Slug></Slug>,
+        element: (
+          <HrRoute>
+            <Slug></Slug>
+          </HrRoute>
+        ),
         loader: ({ params }) =>
           fetch(
             `http://localhost:5000/dashboard/payment-details/${params.userId}`
           ),
       },
-  
+
       //Admin only
       {
         path: "all-employee",
@@ -84,9 +110,13 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'payroll',
-        element: <Payroll></Payroll>
-      }
+        path: "payroll",
+        element: (
+          <AdminRoute>
+            <Payroll></Payroll>
+          </AdminRoute>
+        ),
+      },
     ],
   },
 ]);

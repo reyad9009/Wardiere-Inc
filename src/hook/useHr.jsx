@@ -5,10 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 
 // check user is HR
 const useHr = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
   const { data: isHr, isPending: isHrLoading } = useQuery({
     queryKey: [user?.email, "isHr"],
+    enabled: !loading,
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/hr/${user.email}`);
       console.log(res.data); //{HR: true}
