@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 const AllEmployee = () => {
   const [selectedUser, setSelectedUser] = useState(null);
+  const [viewMode, setViewMode] = useState("table");
 
   const {
     register,
@@ -104,64 +105,119 @@ const AllEmployee = () => {
     });
   };
 
+  const toggleView = () => {
+    setViewMode(viewMode === "table" ? "grid" : "table");
+  };
+
   return (
     <div className="w-full">
       <div className="flex justify-evenly my-4">
         <h2 className="text-3xl">All Users</h2>
         <h2 className="text-3xl">Total Users: {nonAdminUsers.length}</h2>
+        <button
+          onClick={toggleView}
+          className="btn bg-blue-500 text-white px-4 py-2 rounded-lg"
+        >
+          Toggle {viewMode === "table" ? "Grid View" : "Table View"}
+        </button>
       </div>
-      <div className="overflow-hidden shadow-md rounded-lg">
-        <table className="table table-zebra w-full">
-          <thead className="uppercase bg-[#f55353] text-[#e5e7eb]">
-            <tr className="border border-gray-300">
-              <td className="py-6 font-bold ">Si</td>
-              <td className="py-6 font-bold ">Name</td>
-              <td className="py-6 font-bold ">Email</td>
-              <td className="py-6 font-bold ">Designation</td>
-              <td className="py-6 font-bold ">Bank Account No</td>
-              <td className="py-6 font-bold ">Salary</td>
-              <td className="py-6 font-bold ">Adjust Salary</td>
-              <td className="py-6 font-bold text-center">Fire</td>
-              <td className="py-6 font-bold ">Make HR</td>
-              <td className="py-6 font-bold ">Details</td>
-            </tr>
-          </thead>
-          <tbody>
-            {nonAdminUsers.map((user, index) => (
-              <tr key={user._id}>
-                <th className="border-b-2">{index + 1}</th>
-                <td className="border-b-2">{user.name}</td>
-                <td className="border-b-2">{user.email}</td>
-                <td className="border-b-2">{user.designation}</td>
-                <td className="border-b-2">{user.bankAccountNo}</td>
-                <td className="border-b-2">{user.salary}</td>
-                <td className="border-b-2">
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      setSelectedUser(user);
-                      setValue("salary", user.salary);
-                      document.getElementById("salary_modal").showModal();
-                    }}
-                  >
-                    <FaEdit />
-                  </button>
-                </td>
 
-                <td className="border-b-2">
-                  {user.role === "Fired" ? (
-                    "Fired"
-                  ) : (
+      {viewMode === "table" ? (
+        <div className="overflow-hidden shadow-md rounded-lg">
+          <table className="table table-zebra w-full">
+            <thead className="uppercase bg-[#f55353] text-[#e5e7eb]">
+              <tr className="border border-gray-300">
+                <td className="py-6 font-bold ">Si</td>
+                <td className="py-6 font-bold ">Name</td>
+                <td className="py-6 font-bold ">Email</td>
+                <td className="py-6 font-bold ">Designation</td>
+                <td className="py-6 font-bold ">Bank Account No</td>
+                <td className="py-6 font-bold ">Salary</td>
+                <td className="py-6 font-bold ">Adjust Salary</td>
+                <td className="py-6 font-bold text-center">Fire</td>
+                <td className="py-6 font-bold ">Make HR</td>
+              </tr>
+            </thead>
+            <tbody>
+              {nonAdminUsers.map((user, index) => (
+                <tr key={user._id}>
+                  <th className="border-b-2">{index + 1}</th>
+                  <td className="border-b-2">{user.name}</td>
+                  <td className="border-b-2">{user.email}</td>
+                  <td className="border-b-2">{user.designation}</td>
+                  <td className="border-b-2">{user.bankAccountNo}</td>
+                  <td className="border-b-2">{user.salary}</td>
+                  <td className="border-b-2">
                     <button
-                      onClick={() => handleChangeUser(user)}
-                      className="btn btn-ghost"
+                      className="btn"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setValue("salary", user.salary);
+                        document.getElementById("salary_modal").showModal();
+                      }}
                     >
-                      <GiSmallFire className="text-red-600" />
+                      <FaEdit />
                     </button>
-                  )}
-                </td>
+                  </td>
 
-                <td className="text-center border-b-2">
+                  <td className="border-b-2">
+                    {user.role === "Fired" ? (
+                      "Fired"
+                    ) : (
+                      <button
+                        onClick={() => handleChangeUser(user)}
+                        className="btn btn-ghost"
+                      >
+                        <GiSmallFire className="text-red-600" />
+                      </button>
+                    )}
+                  </td>
+
+                  <td className="text-center border-b-2">
+                    {user.role === "hr" ? (
+                      "HR"
+                    ) : (
+                      <button
+                        onClick={() => handleMakeHr(user)}
+                        className="btn bg-orange-500"
+                      >
+                        Make HR
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        // Grid View
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+          {nonAdminUsers.map((user) => (
+            <div
+              key={user._id}
+              className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-start"
+            >
+              <h3 className="text-xl font-bold">{user.name}</h3>
+              <p>Email: {user.email}</p>
+              <p>Designation: {user.designation}</p>
+              <p>Bank Account No: {user.bankAccountNo}</p>
+              <p>Salary: {user.salary}</p>
+              <div className="mt-4 flex gap-3">
+                <button
+                  className="btn bg-green-500"
+                  onClick={() => {
+                    setSelectedUser(user);
+                    setValue("salary", user.salary);
+                    document.getElementById("salary_modal").showModal();
+                  }}
+                >
+                  Adjust Salary
+                </button>
+                <button className="btn bg-red-500">
+                  <GiSmallFire className="text-white" />
+                </button>
+                <div>
                   {user.role === "hr" ? (
                     "HR"
                   ) : (
@@ -172,15 +228,12 @@ const AllEmployee = () => {
                       Make HR
                     </button>
                   )}
-                </td>
-                <td className="border-b-2">
-                  <TbListDetails />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Modal */}
       <dialog id="salary_modal" className="modal">
