@@ -5,10 +5,10 @@ import useAdmin from "../../hook/useAdmin";
 import useHr from "../../hook/useHr";
 import Swal from "sweetalert2";
 import useEmployee from "../../hook/useEmployee";
+import logo from '../../assets/logo.png';
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
-  // big problem here
   const [isAdmin] = useAdmin();
   const [isHr] = useHr();
   const [isEmployee] = useEmployee();
@@ -30,29 +30,22 @@ const Navbar = () => {
   };
   const links = (
     <>
-      {/* 
-        <li>
-          <Link to="/dashboard">Dashboard</Link>
-        </li> */}
+      <li>
+        <Link to="/">Home</Link>
+      </li>
       {user && isAdmin && (
         <li>
-          <Link to="/dashboard/all-employee">
-            Dashboard
-          </Link>
+          <Link to="/dashboard/all-employee">Dashboard</Link>
         </li>
       )}
       {user && isHr && (
         <li>
-          <Link to="/dashboard/employee-list">
-            Dashboard
-          </Link>
+          <Link to="/dashboard/employee-list">Dashboard</Link>
         </li>
       )}
       {user && isEmployee && (
         <li>
-          <Link to="/dashboard/work-sheet">
-            Dashboard
-          </Link>
+          <Link to="/dashboard/work-sheet">Dashboard</Link>
         </li>
       )}
 
@@ -90,10 +83,8 @@ const Navbar = () => {
           </div>
 
           <div className="flex-1 ">
-            {/* <img className="lg:w-[70px] w-[50px] " src={logo} alt="" /> */}
-            <p className="font-bold lg:text-3xl text-xl ml-3">
-              Fradel and Spies
-            </p>
+            <img className="lg:w-[70px] w-[50px] " src={logo} alt="" />
+            <p className="font-bold lg:text-3xl text-xl ml-3">Wardiere.Inc</p>
           </div>
 
           <div className="hidden flex-none lg:block w-[40%]">
