@@ -16,11 +16,13 @@ import PaymentHistory from "../pages/Dashboard/Employee/PaymentHistory";
 import Messages from "../pages/Dashboard/Admin/Messages";
 import HrRoute from "./HrRoute";
 import EmployeeRoute from "./EmployeeRoute";
+import Error from "../pages/Error/Error";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <Error></Error>,
     children: [
       {
         path: "/",

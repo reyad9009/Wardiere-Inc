@@ -5,7 +5,7 @@ import useAdmin from "../../hook/useAdmin";
 import useHr from "../../hook/useHr";
 import Swal from "sweetalert2";
 import useEmployee from "../../hook/useEmployee";
-import logo from '../../assets/logo.png';
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -92,7 +92,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex justify-center items-center">
-            <div className="md:pr-5 pr-4">
+            <div className="lg:block hidden">
               {user && user?.email ? (
                 <div className="dropdown dropdown-end">
                   <div
@@ -107,21 +107,15 @@ const Navbar = () => {
                   <ul
                     tabIndex={0}
                     className="menu menu-sm dropdown-content bg-primaryColor rounded-box z-50 mt-3 w-52 p-3 shadow space-y-2"
-                  ></ul>
+                  >
+                    <button
+                      onClick={handleLogOut}
+                      className="bg-primaryColor lg:px-8 lg:py-3 px-2 py-2 lg:text-xl text-sm font-semibold rounded-full text-white"
+                    >
+                      Logout
+                    </button>
+                  </ul>
                 </div>
-              ) : (
-                <div className=""></div>
-              )}
-            </div>
-
-            <div className="lg:block hidden">
-              {user && user?.email ? (
-                <button
-                  onClick={handleLogOut}
-                  className="bg-primaryColor lg:px-8 lg:py-3 px-2 py-2 lg:text-xl text-sm font-semibold rounded-full text-white"
-                >
-                  Logout
-                </button>
               ) : (
                 <Link
                   to="/login"
