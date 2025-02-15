@@ -14,9 +14,9 @@ const Navbar = () => {
   const [isEmployee] = useEmployee();
 
   const handleLogOut = () => {
-    console.log("Logging out...");
+    //console.log("Logging out...");
     logOut().then(() => {
-      console.log("Logged out successfully.");
+      //console.log("Logged out successfully.");
       Swal.fire({
         title: "Log Out Successful.",
         showClass: {

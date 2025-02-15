@@ -18,7 +18,7 @@ const Payroll = () => {
     const payDate = {
       date: formattedDate,
     };
-    console.log(payDate)
+    //console.log(payDate)
     axiosSecure.patch(`/users/payroll/${user._id}`, payDate).then((res) => {
       if (res.data.modifiedCount > 0) {
         refetch();

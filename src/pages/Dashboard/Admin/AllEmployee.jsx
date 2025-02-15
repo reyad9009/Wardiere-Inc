@@ -54,7 +54,7 @@ const AllEmployee = () => {
       toast.error("No user selected for salary update.");
       return;
     }
-    console.log(data.salary);
+    //console.log(data.salary);
     const updatedTask = {
       salary: data.salary,
     };

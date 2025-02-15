@@ -13,8 +13,8 @@ import useAuth from "../../../hook/useAuth";
 
 const WorkSheet = () => {
   const {user} = useAuth();
-  console.log(user?.email)
-  console.log(user?.displayName)
+  //console.log(user?.email)
+  //console.log(user?.displayName)
   const {
     register,
     handleSubmit,

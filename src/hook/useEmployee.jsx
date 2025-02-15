@@ -12,7 +12,7 @@ const useEmployee = () => {
     enabled: !loading,
     queryFn: async () => {
       const res = await axiosSecure.get(`/users/employee/${user.email}`);
-      console.log(res.data); //{HR: true}
+      //console.log(res.data); //{HR: true}
       return res.data?.employee;
     },
   });
