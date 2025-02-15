@@ -1,8 +1,8 @@
 # Wardiere.Inc
 ## Live site: https://bistro-boss-fdc96.web.app/
 
-* Admin Email: 
-* Admin Password:
+* Admin Email: tarek@gmail.com
+* Admin Password: Tarek018#
 
 # 1.User Management
 * Allow new users to create accounts using their email and password.

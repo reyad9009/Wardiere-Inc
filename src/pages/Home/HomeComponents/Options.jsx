@@ -4,7 +4,7 @@ import option2 from "../../../assets/option2.png";
 import option3 from "../../../assets/option3.png";
 const Options = () => {
   return (
-    <div className="flex gap-10">
+    <div className="flex flex-col px-12 lg:flex-row gap-10">
       <div className="flex flex-col justify-start items-center">
         <img src={option1} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">

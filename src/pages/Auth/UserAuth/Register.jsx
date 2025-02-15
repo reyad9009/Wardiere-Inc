@@ -143,7 +143,7 @@ const RegistrationForm = () => {
             >
               <option value="">Select Role</option>
               <option value="employee">Employee</option>
-              <option value="HR">HR</option>
+              <option value="hr">HR</option>
             </select>
             {errors.role && (
               <p className="text-red-500 text-sm">{errors.role.message}</p>

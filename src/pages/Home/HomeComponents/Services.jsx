@@ -5,7 +5,7 @@ import img2 from "../../../assets/2.png";
 const Services = () => {
   return (
     <div className="">
-      <div className="flex gap-20">
+      <div className="flex lg:flex-row flex-col gap-20 px-12 lg:px-0">
         <div className="mt-12">
           <span className="font-bold p-10 bg-primaryColor text-3xl text-white">
             01
@@ -26,7 +26,7 @@ const Services = () => {
         </div>
         <img className="" src={img2} alt="" />
       </div>
-      <div className="flex gap-20 mt-20">
+      <div className="flex lg:flex-row flex-col gap-20 px-12 mt-20">
         <img className="" src={img1} alt="" />
         <div className="mt-12">
           <span className="font-bold p-10 bg-primaryColor text-3xl text-white">

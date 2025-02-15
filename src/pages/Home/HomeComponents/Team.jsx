@@ -6,7 +6,7 @@ import team4 from "../../../assets/4team.png";
 
 const Team = () => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex px-12 lg:px-0 flex-col lg:flex-row items-center justify-center">
       <div className="flex flex-col justify-start items-center">
         <img className="w-[400px]" src={team1} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">Brigitte Schwartz</h1>

@@ -92,7 +92,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex justify-center items-center">
-            <div className="lg:block hidden">
+            <div className="lg:block">
               {user && user?.email ? (
                 <div className="dropdown dropdown-end">
                   <div
