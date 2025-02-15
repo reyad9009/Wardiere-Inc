@@ -4,7 +4,7 @@ import useAuth from "./useAuth";
 
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://b10a12-server-side-reyad9009.vercel.app",
 });
 const useAxiosSecure = () => {
   const navigate = useNavigate();

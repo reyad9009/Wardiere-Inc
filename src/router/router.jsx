@@ -98,7 +98,7 @@ export const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(
-            `http://localhost:5000/dashboard/payment-details/${params.userId}`
+            `https://b10a12-server-side-reyad9009.vercel.app/dashboard/payment-details/${params.userId}`
           ),
       },
 
