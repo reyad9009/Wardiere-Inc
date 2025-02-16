@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <div className="flex justify-center">
       <Helmet>
-        <title>Career Kindle | Login</title>
+        <title>Login</title>
       </Helmet>
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <h2 className="text-3xl font-extrabold text-center mb-10">

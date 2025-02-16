@@ -221,9 +221,9 @@ const RegistrationForm = () => {
           <GoogleLogin></GoogleLogin>
         </div>
         <p className="text-center mb-10 mt-5">
-          Don't have an account ?
+          Already have an account ?
           <Link className="text-red-600 font-bold ml-2" to="/login">
-            Register
+            Login
           </Link>
         </p>
       </div>
