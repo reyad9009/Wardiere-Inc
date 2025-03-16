@@ -7,7 +7,7 @@ import Testimonials from '../HomeComponents/Testimonials';
 
 const Home = () => {
     return (
-        <div className=''>
+        <div className='overflow-hidden'>
             <Banner></Banner>
             <h1 className='text-center mt-16 mb-10 font-bold text-4xl'>Our Services</h1>
             <Services></Services>

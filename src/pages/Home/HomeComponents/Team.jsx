@@ -8,7 +8,7 @@ const Team = () => {
   return (
     <div className="flex px-12 lg:px-0 flex-col lg:flex-row items-center justify-center">
       <div className="flex flex-col justify-start items-center">
-        <img className="w-[400px]" src={team1} alt="" />
+        <img className="w-[400px] hover:scale-90 transition-all duration-300" src={team1} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">Brigitte Schwartz</h1>
         <p className="text-center px-10">
           With years of experience in the transportation industry, [Name] leads
@@ -18,7 +18,7 @@ const Team = () => {
         </p>
       </div>
       <div className="flex flex-col justify-start items-center">
-        <img className="w-[450px]" src={team2} alt="" />
+        <img className="w-[450px] hover:scale-90 transition-all duration-300" src={team2} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">Alfredo Torres</h1>
         <p className="text-center px-10">
           As the backbone of our daily operations, [Name] oversees fleet
@@ -29,7 +29,7 @@ const Team = () => {
       </div>
     
       <div className="flex flex-col justify-center items-center">
-        <img className="w-[400px]" src={team4} alt="" />
+        <img className="w-[400px] hover:scale-90 transition-all duration-300" src={team4} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">Margarita Perez</h1>
         <p className="text-center px-10">
           Providing excellent customer service is [Name]’s top priority. She

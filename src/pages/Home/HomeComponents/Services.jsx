@@ -24,10 +24,10 @@ const Services = () => {
             </p>
           </div>
         </div>
-        <img className="" src={img2} alt="" />
+        <img className="hover:scale-90 transition-all duration-300" src={img2} alt="" />
       </div>
       <div className="flex lg:flex-row flex-col gap-20 px-12 mt-20">
-        <img className="" src={img1} alt="" />
+        <img className="hover:scale-90 transition-all duration-300" src={img1} alt="" />
         <div className="mt-12">
           <span className="font-bold p-10 bg-primaryColor text-3xl text-white">
             02

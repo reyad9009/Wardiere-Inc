@@ -6,7 +6,7 @@ const Options = () => {
   return (
     <div className="flex flex-col px-12 lg:flex-row gap-10">
       <div className="flex flex-col justify-start items-center">
-        <img src={option1} alt="" />
+        <img src={option1} className="hover:scale-90 transition-all duration-300" alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">
           {" "}
           Real-Time Inventory Tracking
@@ -18,7 +18,7 @@ const Options = () => {
         </p>
       </div>
       <div className="flex flex-col justify-start items-center">
-        <img src={option2} alt="" />
+        <img className="hover:scale-90 transition-all duration-300" src={option2} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">
           {" "}
           Multi-Location Facilities
@@ -31,7 +31,7 @@ const Options = () => {
         </p>
       </div>
       <div className="flex flex-col justify-start items-center">
-        <img src={option3} alt="" />
+        <img className="hover:scale-90 transition-all duration-300" src={option3} alt="" />
         <h1 className="py-5 font-bold text-2xl text-primaryColor">
           {" "}
           Temperature-Controlled Storage
